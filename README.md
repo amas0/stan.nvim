@@ -17,6 +17,8 @@ Neovim plugin for the [Stan](https://mc-stan.org/) probabilistic programming lan
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
+Works with both the old (`master`) and new (`main`) branches of nvim-treesitter:
+
 ```lua
 {
   'amas0/stan.nvim',
@@ -25,6 +27,10 @@ Neovim plugin for the [Stan](https://mc-stan.org/) probabilistic programming lan
 ```
 
 After installing, run `:TSInstall stan` to compile the parser.
+
+> **Note:** If using nvim-treesitter `main` branch, you will need
+> [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md)
+> (>= 0.26.1) installed, as required by the new branch for building parsers.
 
 ## Credits
 
