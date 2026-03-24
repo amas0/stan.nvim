@@ -17,20 +17,56 @@ Neovim plugin for the [Stan](https://mc-stan.org/) probabilistic programming lan
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
-Works with both the old (`master`) and new (`main`) branches of nvim-treesitter:
+Works with both the old (`master`) and new (`main`) branches of nvim-treesitter.
+After installing, run `:TSInstall stan` to compile the parser.
+
+#### nvim-treesitter `master` branch
+
+The old `master` branch handles highlighting via its own config:
 
 ```lua
+{
+  'nvim-treesitter/nvim-treesitter',
+  main = 'nvim-treesitter.configs',
+  opts = { highlight = { enable = true } },
+},
 {
   'amas0/stan.nvim',
   dependencies = { 'nvim-treesitter/nvim-treesitter' },
 }
 ```
 
-After installing, run `:TSInstall stan` to compile the parser.
+#### nvim-treesitter `main` branch
 
-> **Note:** If using nvim-treesitter `main` branch, you will need
+The new `main` branch is a parser installer only — it no longer manages highlighting.
+You need to enable treesitter highlighting yourself, either globally or per-filetype:
+
+```lua
+{
+  'nvim-treesitter/nvim-treesitter',
+  branch = 'main',
+  build = ':TSUpdate',
+},
+{
+  'amas0/stan.nvim',
+  dependencies = { 'nvim-treesitter/nvim-treesitter' },
+}
+```
+
+Then somewhere in your config, enable treesitter highlighting:
+
+```lua
+-- Enable for all filetypes that have a parser installed
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(args)
+    pcall(vim.treesitter.start, args.buf)
+  end,
+})
+```
+
+> **Note:** The `main` branch requires
 > [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter/blob/master/cli/README.md)
-> (>= 0.26.1) installed, as required by the new branch for building parsers.
+> (>= 0.26.1) installed for building parsers.
 
 ## Credits
 
