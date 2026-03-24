@@ -39,29 +39,27 @@ The old `master` branch handles highlighting via its own config:
 #### nvim-treesitter `main` branch
 
 The new `main` branch is a parser installer only — it no longer manages highlighting.
-You need to enable treesitter highlighting yourself, either globally or per-filetype:
+You need to enable treesitter highlighting yourself, the below example config
+should do it:
 
 ```lua
 {
   'nvim-treesitter/nvim-treesitter',
   branch = 'main',
   build = ':TSUpdate',
+  lazy = false,
+  config = function()
+    vim.api.nvim_create_autocmd('FileType', {
+      callback = function(args)
+        pcall(vim.treesitter.start, args.buf)
+      end,
+   })
+  end,
 },
 {
   'amas0/stan.nvim',
   dependencies = { 'nvim-treesitter/nvim-treesitter' },
 }
-```
-
-Then somewhere in your config, enable treesitter highlighting:
-
-```lua
--- Enable for all filetypes that have a parser installed
-vim.api.nvim_create_autocmd('FileType', {
-  callback = function(args)
-    pcall(vim.treesitter.start, args.buf)
-  end,
-})
 ```
 
 > **Note:** The `main` branch requires
